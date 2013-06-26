@@ -45,6 +45,8 @@ module Jekyll
           t = Time.now.strftime("%Y-%m-%d %H:%M:%S")
           print Jekyll.logger.formatted_topic("Regenerating:") + "#{args.size} files at #{t} "
           self.process_site(site)
+          puts "reloading chrome"
+          self.reload_chrome
           puts  "...done."
         end
 
@@ -58,6 +60,14 @@ module Jekyll
 
           loop { sleep 1000 }
         end
+      end
+
+          # Private: Reload active chrome tab
+      def self.reload_chrome
+        apple_script = 'tell application "Google Chrome" to tell the active tab of its first window
+          reload
+        end tell'
+        `osascript -e '#{apple_script}'`
       end
     end
   end
